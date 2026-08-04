@@ -105,18 +105,18 @@ def run_dunn_test(ho_df):
         return None
 
 ### MAIN ###
-inds_save=r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\02_SVG\Ho_inds_merged_intersect_salmo_trutta_modern_ancient_bisnps_Q30-0_DP5-0_time_2.csv"
-stat_save=r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\02_SVG\Ho_stat_merged_intersect_salmo_trutta_modern_ancient_bisnps_Q30-0_DP5-0_time_2.csv"
-dunn_save=r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\02_SVG\Dunn_merged_intersect_salmo_trutta_modern_ancient_bisnps_Q30-0_DP5-0_time_2.csv"
-hohe_save=r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\02_SVG\Ho_He_Fis_merged_intersect_salmo_trutta_modern_ancient_bisnps_Q30-0_DP5-0_time_2.csv"
-boxx_save=r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\02_SVG\Boxplot_merged_intersect_salmo_trutta_modern_ancient_bisnps_Q30-0_DP5_time_nodot_2.svg"
+inds_save=r""    # CSV
+stat_save=r""    # CSV
+dunn_save=r""    # CSV
+hohe_save=r""    # CSV
+boxx_save=r""    # SVG
 print("Read VCF")
-callset = allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\merged_intersect_salmo_trutta_modern_ancient_bisnps_Q30-0_DP5-0.vcf.gz")
+callset = allel.read_vcf(r"")    # VCF or VCF.GZ
 genotypes = allel.GenotypeArray(callset['calldata/GT'])
 print("Filter VCF")
-#genotypes = filter_by_maf(genotypes, min_maf=0.05)
+genotypes = filter_by_maf(genotypes, min_maf=0.05)    # Change min_maf if you want to be more or less strict.
 smpl = callset['samples']
-genotypes, smpl, kept_indices = filter_samples_with_min_snps(genotypes, smpl, min_snps=3) # Remove samples with < 3 SNPs
+genotypes, smpl, kept_indices = filter_samples_with_min_snps(genotypes, smpl, min_snps=3)    # Remove samples with < 3 SNPs
 print("Read POP")
 pop_df = pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\pop_trutta_date.txt", sep="\t", header=None, names=["Sample", "Population"])
 pop_df = pop_df[pop_df["Sample"].isin(smpl)]        # Match samples directly
