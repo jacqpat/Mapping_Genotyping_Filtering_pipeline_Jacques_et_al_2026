@@ -146,23 +146,23 @@ def union_genotypes(callset1, callset2,g1,g2):
     # Concatenate samples
     return allel.GenotypeArray( np.concatenate([g1_aligned, g2_aligned], axis=1) )
 
-callset1=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\salmo_salar_ancient_mpileup_bisnps_Q30_DP5.vcf.gz")
-callset2=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\salmo_salar_modern_mpileup_bisnps_0MPHB_refilled_Q30_DP5.vcf.gz")
-pop_df1= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\ancients_groupes_1pop.txt", sep="\t", header=None, names=["Sample", "Population"])
-pop_df2= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\modernes_groupes_2pop.txt", sep="\t", header=None, names=["Sample", "Population"])
-dunn_save=r"C:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_salar_last-shot\01_SVG\Dunn_Ssal_sep_Q30_DP5_continents.csv"
-hohe_save=r"C:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_salar_last-shot\01_SVG\Ho_He_Fis_Ssal_sep_Q30_DP5_continents.csv"
-boxx_save=r"C:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_salar_last-shot\01_SVG\_Ssal_sep_Q30_DP5_continents.svg"
-stat_save=r"C:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_salar_last-shot\01_SVG\Ho_stat_Ssal_sep_Q30_DP5_continents.csv"
+callset1=allel.read_vcf(r"")    # VCF or VCF.GZ
+callset2=allel.read_vcf(r"")    # VCF or VCF.GZ
+pop_df1= pd.read_csv(r"", sep="\t", header=None, names=["Sample", "Population"])    # Headless TSV
+pop_df2= pd.read_csv(r"", sep="\t", header=None, names=["Sample", "Population"])    # Headless TSV
+dunn_save=r""    # CSV
+hohe_save=r""    # CSV
+boxx_save=r""    # SVG
+stat_save=r""    # CSV
 genotypes1 = allel.GenotypeArray(callset1['calldata/GT'])
 genotypes2 = allel.GenotypeArray(callset2['calldata/GT'])
 # filters VCF
-#genotypes1 = filter_by_maf(genotypes1, min_maf=0.05)
-#genotypes2 = filter_by_maf(genotypes2, min_maf=0.05)
+genotypes1 = filter_by_maf(genotypes1, min_maf=0.05)    # You can change min_maf according to your needs.
+genotypes2 = filter_by_maf(genotypes2, min_maf=0.05)    # You can change min_maf according to your needs..
 smpl1 = callset1['samples']
 smpl2 = callset2['samples']
-genotypes1, smpl1, kept_indices1 = filter_samples_with_min_snps(genotypes1, smpl1, min_snps=3) # Remove samples with < 3 SNPs
-genotypes2, smpl2, kept_indices2 = filter_samples_with_min_snps(genotypes2, smpl2, min_snps=3) # Remove samples with < 3 SNPs
+genotypes1, smpl1, kept_indices1 = filter_samples_with_min_snps(genotypes1, smpl1, min_snps=3)    # Remove samples with < 3 SNPs
+genotypes2, smpl2, kept_indices2 = filter_samples_with_min_snps(genotypes2, smpl2, min_snps=3)    # Remove samples with < 3 SNPs
 print("Read POP")
 pop_df1 = pop_df1[pop_df1["Sample"].isin(smpl1)]        # Match samples directly
 pop_df2 = pop_df2[pop_df2["Sample"].isin(smpl2)]        # Match samples directly
@@ -196,14 +196,12 @@ stats_df = (
     .reset_index()
 )
 print(stats_df)
+# Boxplot
 stats_df.to_csv(stat_save, index=False)
-order = ["Ancient","Canada","Europe"]
-'''order = ["Paleolithic","Neolithic","Antiquity","Medieval","CANADA","GREENLAND","FIN_Teno","FIN_Tornionjoki","SWEDEN","NORWAY","DANEMARK","UK_Bresle","UK_Washburn",\
-         "UK_Sawwde-Tawe","UK_Others","FR_Scorff","FR_Allier","FR_Adour","FR_Nive","FR_Nivelle","ESP_Bidassoa","ESP_Others"]'''
+order = ["Ancient","Canada","Europe"]    # Change to YOUR populations.
 ind_df["Population"] = pd.Categorical(ind_df["Population"], ordered=True, categories = order)
 mpl.rcParams['svg.fonttype'] = 'none'
 plt.figure(figsize=(8, 8))
-#sns.violinplot( data=ind_df, x="Population", y="Ho", hue="Population", palette="Set2", cut=0, legend=False, dodge=False)
 sns.boxplot(data=ind_df, x="Population", y="Ho", hue="Population",palette="Set2", showfliers = False, legend=False, dodge=False)
 sns.stripplot(data=ind_df, x="Population", y="Ho", color="black", alpha=0.6, jitter=True)
 plt.ylabel("Observed Heterozygosity (Ho)")
