@@ -150,6 +150,7 @@ callset1=allel.read_vcf(r"")    # VCF or VCF.GZ
 callset2=allel.read_vcf(r"")    # VCF or VCF.GZ
 pop_df1= pd.read_csv(r"", sep="\t", header=None, names=["Sample", "Population"])    # Headless TSV
 pop_df2= pd.read_csv(r"", sep="\t", header=None, names=["Sample", "Population"])    # Headless TSV
+order = ["Placeholder_X","Placeholder_Y","Placeholder_Z"]    # Order of the populations shown in the final Boxplot graph
 dunn_save=r""    # CSV
 hohe_save=r""    # CSV
 boxx_save=r""    # SVG
@@ -157,8 +158,8 @@ stat_save=r""    # CSV
 genotypes1 = allel.GenotypeArray(callset1['calldata/GT'])
 genotypes2 = allel.GenotypeArray(callset2['calldata/GT'])
 # filters VCF
-genotypes1 = filter_by_maf(genotypes1, min_maf=0.05)    # You can change min_maf according to your needs.
-genotypes2 = filter_by_maf(genotypes2, min_maf=0.05)    # You can change min_maf according to your needs..
+genotypes1 = filter_by_maf(genotypes1, min_maf=0.05)    # You can change min_maf according to your needs
+genotypes2 = filter_by_maf(genotypes2, min_maf=0.05)    # You can change min_maf according to your needs
 smpl1 = callset1['samples']
 smpl2 = callset2['samples']
 genotypes1, smpl1, kept_indices1 = filter_samples_with_min_snps(genotypes1, smpl1, min_snps=3)    # Remove samples with < 3 SNPs
@@ -198,7 +199,6 @@ stats_df = (
 print(stats_df)
 # Boxplot
 stats_df.to_csv(stat_save, index=False)
-order = ["Ancient","Canada","Europe"]    # Change to YOUR populations.
 ind_df["Population"] = pd.Categorical(ind_df["Population"], ordered=True, categories = order)
 mpl.rcParams['svg.fonttype'] = 'none'
 plt.figure(figsize=(8, 8))
