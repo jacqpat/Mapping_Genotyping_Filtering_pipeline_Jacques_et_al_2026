@@ -2,3 +2,8 @@
 Pipeline used for both modern and ancient DNA mapping, genotyping, and SNPs-filtering in Jacques et al. (2026, submitted).
 
 The Pipeline was written to be used on a Cluster such as the one proposed by the Genotoul (for more informations see: https://bioinfo.genotoul.fr/). softwares and modules are thus loaded directly by the scripts. The exact syntax of these command lines need to be adapted to your Cluster. Alternatively, you can run these scripts on your own computer if it's a Linux (with a bash console) or through Windows Subsystem for Linux (WSL) if on a Windows OS. Then you will have to download and install NFcore Nextflow, EAGER, BCFtools, and Singularity on your machine for the scripts to run. While the BCFtools scripts proposed are small and are merely written down command prompts that can be easily run even on WSL, it is strongly advised to install and runn the EAGER pipeline on your prefered Cluster, if it isn't already, and adapt the scripts accordingly.
+
+### 2026/08/04
+Added the python scripts used for Jacques et al. (2026, submitted) to calculate the Observed and Expected Heterozigosity plus the FIS. Because ancient and modern samples were kept separate in two VCFs for S. salar, there are two scripts, one of which take two VCFs as input. He's marked as "double" and "for_salar" even if he could be used for any other similar situation.
+
+Contrary to the bash files, these python scripts were not designed to be run on a cluster. They're expected to be run on your own Windows or Linux system instead. It is also expected that you modify the input values manually in the file: the paths to the VCFs, to the population files, the outputs' destinations... all values that you should change are in the ## MAIN ## section of both scripts.
