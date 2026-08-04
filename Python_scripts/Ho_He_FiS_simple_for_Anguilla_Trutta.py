@@ -110,15 +110,16 @@ stat_save=r""    # CSV
 dunn_save=r""    # CSV
 hohe_save=r""    # CSV
 boxx_save=r""    # SVG
-print("Read VCF")
 callset = allel.read_vcf(r"")    # VCF or VCF.GZ
+pop_df = pd.read_csv(r"", sep="\t", header=None, names=["Sample", "Population"])    # Headless TSV
+order = ["Placeholder_X","Placeholder_Y"]    # The order in which you want your populations to appear in the final Boxplot.
+print("Read VCF")
 genotypes = allel.GenotypeArray(callset['calldata/GT'])
 print("Filter VCF")
 genotypes = filter_by_maf(genotypes, min_maf=0.05)    # Change min_maf if you want to be more or less strict.
 smpl = callset['samples']
 genotypes, smpl, kept_indices = filter_samples_with_min_snps(genotypes, smpl, min_snps=3)    # Remove samples with < 3 SNPs
 print("Read POP")
-pop_df = pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\pop_trutta_date.txt", sep="\t", header=None, names=["Sample", "Population"])
 pop_df = pop_df[pop_df["Sample"].isin(smpl)]        # Match samples directly
 samples = smpl
 sample_to_pop = dict(zip(pop_df["Sample"], pop_df["Population"]))
@@ -163,7 +164,6 @@ stats_df = (
 print(stats_df)
 stats_df.to_csv(stat_save, index=False)
 # phase 3: Visualisation
-order = ["Paleolithic","Neolithic","Medieval_&_Antiquity","1998-2010","2011-2020","2021-More"]
 ind_df["Population"] = pd.Categorical(ind_df["Population"], ordered=True, categories = order)
 mpl.rcParams['svg.fonttype'] = 'none'
 plt.figure(figsize=(8, 8))
