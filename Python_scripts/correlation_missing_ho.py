@@ -105,25 +105,12 @@ def get_miss_ho(callset, pop_df, min_maf=0.05, min_snps=3, prefix=""):
     df = ho_and_missing(genotypes, subpop, populations, samples)
     return df
 
-callset1=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AK_anguilla_Q30_DP5\merged_intersect_anguilla_modern_ancient_Q30_DP5.vcf.gz")
-pop_df1= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AK_anguilla_Q30_DP5\OG_gang_time_ENG_2pop.txt", sep="\t", header=None, names=["Sample", "Population"])
-#callset2=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\merged_intersect_salmo_trutta_modern_ancient_bisnps_Q30-0_DP5-0.vcf.gz")
-#pop_df2= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AI_Salmonidae\Salmo_trutta_last-shot\Strut_2pop.txt", sep="\t", header=None, names=["Sample", "Population"])
-callset2=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AN_Trutta_separation\salmo_trutta_ancient_mpileup_bisnps_refilled_Q30_DP5.vcf.gz")
-pop_df2= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AN_Trutta_separation\anciens_1pop.txt", sep="\t", header=None, names=["Sample", "Population"])
-callset3=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AN_Trutta_separation\salmo_trutta_modern_mpileup_bisnps_refilled_Q30_DP5.vcf.gz")
-pop_df3= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AN_Trutta_separation\modernes_3_lineagess_sans_unknown.txt", sep="\t", header=None, names=["Sample", "Population"])
-callset4=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\salmo_salar_ancient_mpileup_bisnps_Q30_DP5.vcf.gz")
-pop_df4= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\ancients_groupes_1pop.txt", sep="\t", header=None, names=["Sample", "Population"])
-callset5=allel.read_vcf(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\salmo_salar_modern_mpileup_bisnps_0MPHB_refilled_Q30_DP5.vcf.gz")
-pop_df5= pd.read_csv(r"c:\Users\pajacques\Documents\2025-07-09_moderne_mapping\AM_Salar_separation\modernes_groupes_1pop.txt", sep="\t", header=None, names=["Sample", "Population"])
+callset1=allel.read_vcf(r"") # .vcf.gz
+pop_df1= pd.read_csv(r"", sep="\t", header=None, names=["Sample", "Population"]) # .txt with two columns: sample names and their population
 print("Reading VCFs...")
 df1 = get_miss_ho(callset1, pop_df1, min_maf=0.05, min_snps=3, prefix="anguilla-")
-df2 = get_miss_ho(callset2, pop_df2, min_maf=0.05, min_snps=3, prefix="trutta-")
-df3 = get_miss_ho(callset3, pop_df3, min_maf=0.05, min_snps=3, prefix="trutta-")
-df4 = get_miss_ho(callset4, pop_df4, min_maf=0.05, min_snps=3, prefix="salar-")
-df5 = get_miss_ho(callset5, pop_df5, min_maf=0.05, min_snps=3, prefix="salar-")
-df_all = pd.concat([df1, df2, df3, df4, df5], ignore_index=True)
+# if there's more than one dataframe. Then create callset2 + pop_df2, etc... for each of your vcf + population file pair and add them to the df_all list.
+df_all = pd.concat([df1], ignore_index=True)
 print("Computing Spearman correlation between Ho and Missingness...")
 for pop in df_all["Population"].unique():
     sub = df_all[df_all["Population"] == pop]
